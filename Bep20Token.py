@@ -2,13 +2,14 @@ from web3 import Web3
 import time
 import json
 import requests
+from urllib.request import urlopen
 
 # enter your private key.  Be careful with your private key
-PRIVATE_KEY = "YOUR PRIVATE_KEY"
+PRIVATE_KEY = "Your PRIVATE_KEY"
 
 # add your blockchain connection information
-url_eth = 'https://api-testnet.bscscan.com/api'
-bsc = 'https://data-seed-prebsc-1-s1.binance.org:8545/'
+url_eth = 'https://api.bscscan.com/api'
+bsc = 'https://bsc-dataseed.binance.org/'
 web3 = Web3(Web3.HTTPProvider(bsc))
 print(web3.isConnected())
 
@@ -20,20 +21,21 @@ print("checksum_dev_wallet:",checksum_dev_wallet)
 to_addresses = ['0x86e3EaEc906f157B281056E44AC50FaE8f9549cb']
 
 # Reward Token
-moon_address = '0xFEB814fd2c240E1a8F71f6EAc0630E4bd56E96F2'
-# apikeytoken = '9G16ZJCZ8JDVSFGU2UPHJ1HW1F8ZIP7ZYD'
+moon_address = '0x047a02a57501a813975b2D347278Fdd3dF671E86'
+apikeytoken = '9G16ZJCZ8JDVSFGU2UPHJ1HW1F8ZIP7ZYD'
 
 
 contract_address = web3.toChecksumAddress(moon_address)
 print("contract_address:",contract_address)
-API_ENDPOINT = url_eth + '?module=contract&action=getapi&address=' + str(contract_address)
+API_ENDPOINT = url_eth + '?module=contract&action=getabi&address=' + str(contract_address) + "&apikey=" + str(apikeytoken)
 print("API_ENDPOINT:", API_ENDPOINT)
 
-r = requests.get(url = API_ENDPOINT)
-response = r.json()
-abi=json.loads(response['result'])
-# abi = "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"burn\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"burnFrom\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"decimals\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"subtractedValue\",\"type\":\"uint256\"}],\"name\":\"decreaseAllowance\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getOwner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"addedValue\",\"type\":\"uint256\"}],\"name\":\"increaseAllowance\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_mintamount\",\"type\":\"uint256\"}],\"name\":\"mint\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
+weather = urlopen(API_ENDPOINT).read()
+weather = weather.decode('utf-8')
 
+abi=json.loads(json.loads(weather)['result'])
+
+print("-------------",abi,"------------------");
 
 token = web3.eth.contract(address=contract_address, abi=abi) # declaring the token contract
 token_balance = token.functions.balanceOf(checksum_dev_wallet).call() / 10**18
@@ -45,7 +47,7 @@ nonce = web3.eth.getTransactionCount(checksum_dev_wallet)
 print("nonce:",nonce)
 for dest_address in to_addresses:
     checksum_dest_wallet = Web3.toChecksumAddress(dest_address)
-    send_amount = int(1*(10**18))
+    send_amount = int(0.00001*(10**18))
     print(send_amount, "********************************Send amount********************************")
 
     try:
@@ -53,7 +55,8 @@ for dest_address in to_addresses:
         contract_method_transferToken_build_tx = contract_method_transferToken.buildTransaction({
             'nonce': nonce,
             'from': checksum_dev_wallet,
-            'gas': 100000,
+            'gas': 210000,
+            'value': 0,
             'gasPrice': web3.eth.gas_price
         })
 
